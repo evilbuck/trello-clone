@@ -5,6 +5,7 @@ import { Droppable, Draggable } from '@hello-pangea/dnd';
 import { List, Card as CardType, useCreateCard, useDeleteCard } from '@/hooks/useBoard';
 import { Card } from './Card';
 import { CardModal } from './CardModal';
+import { trackCreateCard } from '@/lib/analytics';
 
 interface ColumnProps {
   list: List;
@@ -25,11 +26,12 @@ export function Column({ list, index, onDeleteList }: ColumnProps) {
     if (!newCardTitle.trim()) return;
 
     try {
-      await createCard.mutateAsync({
+      const result = await createCard.mutateAsync({
         listId: list.id,
         boardId: list.boardId,
         title: newCardTitle.trim(),
       });
+      trackCreateCard(result.card.id, newCardTitle.trim(), list.id, list.boardId);
       setNewCardTitle('');
       setIsAddingCard(false);
     } catch (error) {

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { clsx } from 'clsx';
+import { trackSignUp } from '@/lib/analytics';
 
 export function RegisterForm() {
   const router = useRouter();
@@ -37,6 +38,7 @@ export function RegisterForm() {
         return;
       }
 
+      trackSignUp('email');
       router.push('/boards');
     } catch {
       setError('An error occurred. Please try again.');

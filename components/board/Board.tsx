@@ -5,6 +5,7 @@ import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
 import { useBoard, useCreateList, useDeleteList, useMoveCard, useReorderList } from '@/hooks/useBoard';
 import { Column } from './Column';
 import { KanbanBoardSkeleton } from '@/components/ui/Skeleton';
+import { trackCreateList } from '@/lib/analytics';
 
 interface BoardProps {
   boardId: string;
@@ -68,10 +69,11 @@ export function Board({ boardId }: BoardProps) {
     if (!newListTitle.trim()) return;
 
     try {
-      await createList.mutateAsync({
+      const result = await createList.mutateAsync({
         boardId,
         title: newListTitle.trim(),
       });
+      trackCreateList(result.list.id, newListTitle.trim(), boardId);
       setNewListTitle('');
       setIsAddingList(false);
     } catch (error) {

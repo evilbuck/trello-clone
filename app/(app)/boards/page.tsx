@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useBoards, useCreateBoard, useDeleteBoard } from '@/hooks/useBoards';
 import { Modal } from '@/components/ui/Modal';
 import { BoardCardSkeleton } from '@/components/ui/Skeleton';
+import { trackCreateBoard } from '@/lib/analytics';
 
 export default function BoardsPage() {
   const router = useRouter();
@@ -19,6 +20,7 @@ export default function BoardsPage() {
 
     try {
       const result = await createBoard.mutateAsync(newBoardTitle.trim());
+      trackCreateBoard(result.board.id, newBoardTitle.trim());
       setNewBoardTitle('');
       setIsModalOpen(false);
       router.push(`/boards/${result.board.id}`);

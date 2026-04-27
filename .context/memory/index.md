@@ -1,5 +1,6 @@
 # Memory Index
 
+- 2026-04-27 | `google-analytics-2026-04-27.md` | domains: [frontend, analytics, tooling] | topics: [google-analytics, gtag, events, nextjs, tracking] | status: active
 - 2026-04-27 | `trello-clone-registration-fix-2026-04-27.md` | domains: [debugging, deployment, kamal, docker, sqlite] | topics: [sqlite, database-path, volume-permissions] | status: completed
 - 2026-04-27 | `trello-clone-deploy-2026-04-27.md` | domains: [devops, deployment, kamal] | topics: [kamal, deploy, docker, healthcheck, gitignore] | status: active
 - 2026-04-27 | `card-drag-fix-2026-04-26.md` | domains: [bugfix, backend, database, frontend, ui] | topics: [card-drag, dnd, move-card, list-id-update, optimistic-ui, hover-styling] | status: completed

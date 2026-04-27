@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { clsx } from 'clsx';
+import { trackLogin } from '@/lib/analytics';
 
 export function LoginForm() {
   const router = useRouter();
@@ -30,6 +31,7 @@ export function LoginForm() {
         return;
       }
 
+      trackLogin('email');
       router.push('/boards');
     } catch {
       setError('An error occurred. Please try again.');
