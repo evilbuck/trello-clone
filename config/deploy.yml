@@ -1,0 +1,68 @@
+# Kamal deployment configuration
+# See https://kamal-deploy.org/docs/configuration/
+
+service: trello-clone
+
+servers:
+  web:
+    - <%= `#{ENV["KAMAL_HOST"]}` || "your-host.com" %>:
+        roles:
+          - app
+
+# SSH key for connecting to the server
+ssh:
+  user: root
+  keys:
+    - ~/.ssh/id_rsa
+
+# Builder configuration
+builder:
+  remote:
+    arch: amd64
+    host: <%= `#{ENV["KAMAL_HOST"]}` || "ssh://root@your-host.com" %>
+
+# Docker configuration
+docker:
+  image: <%= `#{ENV["DOCKER_REGISTRY"]}/` if ENV["DOCKER_REGISTRY"] %><%= "trello-clone" %><%= `:#{ENV["TAG"]}` if ENV["TAG"] %><%= ":latest" unless ENV["TAG"] %>
+
+# Environment variables
+env:
+  secret:
+    - RAILS_MASTER_KEY
+    - JWT_SECRET
+    - DATABASE_URL
+  clear:
+    - NODE_ENV: production
+
+# Healthcheck configuration
+healthcheck:
+  path: /api/health
+  port: 3000
+  interval: 10s
+  timeout: 2s
+  retries: 3
+
+# Accessories (databases, etc.)
+accessories:
+  db:
+    image: postgres:16-alpine
+    host: <%= `#{ENV["KAMAL_HOST"]}` || "your-host.com" %>
+    port: 5432
+    env:
+      secret:
+        - POSTGRES_PASSWORD
+        - POSTGRES_USER
+        - POSTGRES_DB
+    volumes:
+      - trello-db:/var/lib/postgresql/data
+
+# Labels
+labels:
+  service: trello-clone
+
+# Registry (if using a private registry)
+# registry:
+#   server: ghcr.io
+#   username: your-username
+#   password:
+#     - DOCKER_REGISTRY_PASSWORD
