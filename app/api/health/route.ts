@@ -1,8 +1,17 @@
 import { NextResponse } from 'next/server';
 import { db, sqlite } from '@/lib/db';
 
+interface DatabaseCheck {
+  status: string;
+  message?: string;
+}
+
 export async function GET() {
-  const checks = {
+  const checks: {
+    status: string;
+    timestamp: number;
+    database: DatabaseCheck;
+  } = {
     status: 'ok',
     timestamp: Date.now(),
     database: { status: 'ok' },
