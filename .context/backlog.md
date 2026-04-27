@@ -45,3 +45,4 @@
 - [x] Add optimistic updates for card drag (2026-04-27)
 - [x] Fix card hover styling for better contrast (2026-04-27)
 - [x] Add Google Analytics tag + custom event tracking (signup, login, create board/list/card) (2026-04-27)
+- [x] Fix signout not redirecting to login page (2026-04-27)

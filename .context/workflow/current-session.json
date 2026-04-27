@@ -58,7 +58,10 @@
     "components/auth/RegisterForm.tsx",
     "app/(app)/boards/page.tsx",
     "components/board/Column.tsx",
-    ".context/memory/google-analytics-2026-04-27.md"
+    ".context/memory/google-analytics-2026-04-27.md",
+    "./app/api/auth/logout/route.ts",
+    "./features/auth/routes/logout/route.ts",
+    ".context/memory/signout-fix-2026-04-27.md"
   ],
   "guided_workflow": null,
   "guided_stage": null,
