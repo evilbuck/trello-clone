@@ -1,38 +1,51 @@
-# Kamal deployment configuration
-# See https://kamal-deploy.org/docs/configuration/
+# Kamal deployment configuration for trello-clone
+# Deploy to Hostinger VPS with DigitalOcean Container Registry
 
 service: trello-clone
 
+# Image (DigitalOcean Container Registry)
+image: releaseoften/trello-clone
+
+# Deployment targets
 servers:
   web:
-    - <%= `#{ENV["KAMAL_HOST"]}` || "your-host.com" %>:
-        roles:
-          - app
+    - 72.60.126.128
 
-# SSH key for connecting to the server
-ssh:
-  user: root
-  keys:
-    - ~/.ssh/id_rsa
+# Reverse proxy configuration with SSL
+proxy:
+  ssl: true
+  hosts:
+    - trello.buckleyrobinson.com
+  app_port: 3000
+  healthcheck:
+    path: /api/health
+    interval: 3
 
-# Builder configuration
-builder:
-  remote:
-    arch: amd64
-    host: <%= `#{ENV["KAMAL_HOST"]}` || "ssh://root@your-host.com" %>
-
-# Docker configuration
-docker:
-  image: <%= `#{ENV["DOCKER_REGISTRY"]}/` if ENV["DOCKER_REGISTRY"] %><%= "trello-clone" %><%= `:#{ENV["TAG"]}` if ENV["TAG"] %><%= ":latest" unless ENV["TAG"] %>
+# Volumes for database and application data
+volumes:
+  - "/var/lib/trello-clone_data:/data"
 
 # Environment variables
 env:
-  secret:
-    - RAILS_MASTER_KEY
-    - JWT_SECRET
-    - DATABASE_URL
+  # Public/Non-secret variables
   clear:
-    - NODE_ENV: production
+    PORT: 3000
+    NODE_ENV: production
+    APP_VERSION: "<%= ENV['APP_VERSION'] %>"
+    GIT_SHA: "<%= ENV['GIT_SHA'] %>"
+
+  # Secret variables (fetched from 1Password via .kamal/secrets)
+  secret:
+    - JWT_SECRET
+    - KAMAL_REGISTRY_PASSWORD
+    - KAMAL_REGISTRY_USERNAME
+
+# Build configuration
+builder:
+  arch: amd64
+  args:
+    APP_VERSION: "<%= ENV['APP_VERSION'] %>"
+    GIT_SHA: "<%= ENV['GIT_SHA'] %>"
 
 # Healthcheck configuration
 healthcheck:
@@ -42,27 +55,14 @@ healthcheck:
   timeout: 2s
   retries: 3
 
-# Accessories (databases, etc.)
-accessories:
-  db:
-    image: postgres:16-alpine
-    host: <%= `#{ENV["KAMAL_HOST"]}` || "your-host.com" %>
-    port: 5432
-    env:
-      secret:
-        - POSTGRES_PASSWORD
-        - POSTGRES_USER
-        - POSTGRES_DB
-    volumes:
-      - trello-db:/var/lib/postgresql/data
-
 # Labels
 labels:
   service: trello-clone
 
-# Registry (if using a private registry)
-# registry:
-#   server: ghcr.io
-#   username: your-username
-#   password:
-#     - DOCKER_REGISTRY_PASSWORD
+# Registry (DigitalOcean Container Registry)
+registry:
+  server: registry.digitalocean.com
+  username:
+    - KAMAL_REGISTRY_USERNAME
+  password:
+    - KAMAL_REGISTRY_PASSWORD

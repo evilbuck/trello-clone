@@ -42,7 +42,11 @@
     "components/board/Board.tsx",
     "components/board/Card.tsx",
     ".context/backlog.md",
-    ".context/2026-04-26.trello-clone-mvp/plan-trello-clone.md"
+    ".context/2026-04-26.trello-clone-mvp/plan-trello-clone.md",
+    "config/deploy.yml",
+    "app/api/health/route.ts",
+    ".gitignore",
+    ".context/memory/trello-clone-deploy-2026-04-27.md"
   ],
   "guided_workflow": null,
   "guided_stage": null,

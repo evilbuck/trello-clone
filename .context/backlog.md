@@ -28,9 +28,11 @@
 
 ## High Priority
 - [ ] Manual testing and verification of Trello Clone MVP
-- [ ] Deploy to Hostinger VPS using Kamal
+- [ ] Configure Kamal secrets for deployment
+- [ ] Set up DNS for trello.buckleyrobinson.com
 
 ## Medium Priority
+- [ ] Run `kamal setup` for initial deployment
 - [ ] Add integration tests
 
 ## Completed
