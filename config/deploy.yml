@@ -31,6 +31,7 @@ env:
   clear:
     PORT: 3000
     NODE_ENV: production
+    DATABASE_PATH: /data/trello-clone.db
     APP_VERSION: "<%= ENV['APP_VERSION'] %>"
     GIT_SHA: "<%= ENV['GIT_SHA'] %>"
 

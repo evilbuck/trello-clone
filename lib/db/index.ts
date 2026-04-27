@@ -2,7 +2,9 @@ import Database from 'better-sqlite3';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import * as schema from './schema';
 
-const sqlite = new Database('trello-clone.db');
+// Database path: /data/trello-clone.db in production, trello-clone.db locally
+const dbPath = process.env.DATABASE_PATH ?? 'trello-clone.db';
+const sqlite = new Database(dbPath);
 export { sqlite };
 export const db = drizzle(sqlite, { schema });
 
