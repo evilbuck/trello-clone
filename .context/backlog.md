@@ -2,6 +2,17 @@
 
 ## Details
 
+### mobile-board-swipe
+**Description**: Redesign mobile board view as a swipeable, snap-to-list carousel
+**Context**:
+- Current mobile view shows all lists at `w-[280px]` which is unusable on phones
+- Desired behavior: one list at a time, swipe left/right, snap to list on release
+- Adjacent lists should partially peek in from sides
+- All CRUD (add/delete card, edit card, add/delete list) must remain functional
+- DnD is disabled on mobile (swipe conflicts with drag handlers)
+- See plan: [.context/2026-04-27.mobile-board-swipe/plan-mobile-board-swipe.md](.context/2026-04-27.mobile-board-swipe/plan-mobile-board-swipe.md)
+- Affected files: `hooks/useIsMobile.ts` (new), `components/board/MobileBoard.tsx` (new), `components/board/MobileList.tsx` (new), `components/board/Board.tsx` (modify)
+
 ### trello-clone-mvp
 **Description**: Build a Trello clone MVP with drag-and-drop, persistent state, and real-time sync
 **Context**:
@@ -46,3 +57,4 @@
 - [x] Fix card hover styling for better contrast (2026-04-27)
 - [x] Add Google Analytics tag + custom event tracking (signup, login, create board/list/card) (2026-04-27)
 - [x] Fix signout not redirecting to login page (2026-04-27)
+- [x] Mobile board swipe view with snap-to-list carousel (2026-04-27)

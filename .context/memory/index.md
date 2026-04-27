@@ -1,5 +1,7 @@
 # Memory Index
 
+- 2026-04-27 | `mobile-board-swipe-2026-04-27.md` | domains: [mobile, responsive, scroll-snap] | topics: [mobile-swipe, scroll-snap, responsive-design, board-view] | status: completed
+- 2026-04-27 | `plan-mobile-board-swipe-2026-04-27.md` | domains: [planning, frontend, mobile, ui] | topics: [mobile-board, swipe, scroll-snap, responsive, trello-clone] | status: completed
 - 2026-04-27 | `signout-fix-2026-04-27.md` | domains: [bugfix, auth, backend] | topics: [signout, logout, auth-cookie, redirect] | status: completed
 - 2026-04-27 | `google-analytics-2026-04-27.md` | domains: [frontend, analytics, tooling] | topics: [google-analytics, gtag, events, nextjs, tracking] | status: active
 - 2026-04-27 | `trello-clone-registration-fix-2026-04-27.md` | domains: [debugging, deployment, kamal, docker, sqlite] | topics: [sqlite, database-path, volume-permissions] | status: completed

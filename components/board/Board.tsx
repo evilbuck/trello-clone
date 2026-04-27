@@ -3,7 +3,9 @@
 import { useState } from 'react';
 import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
 import { useBoard, useCreateList, useDeleteList, useMoveCard, useReorderList } from '@/hooks/useBoard';
+import { useIsMobile } from '@/hooks/useIsMobile';
 import { Column } from './Column';
+import { MobileBoard } from './MobileBoard';
 import { KanbanBoardSkeleton } from '@/components/ui/Skeleton';
 import { trackCreateList } from '@/lib/analytics';
 
@@ -12,6 +14,7 @@ interface BoardProps {
 }
 
 export function Board({ boardId }: BoardProps) {
+  const { isMobile } = useIsMobile();
   const { data: board, isLoading, error } = useBoard(boardId);
   const [isAddingList, setIsAddingList] = useState(false);
   const [newListTitle, setNewListTitle] = useState('');
@@ -100,6 +103,11 @@ export function Board({ boardId }: BoardProps) {
   }
 
   if (!board) return null;
+
+  // Render mobile swipe view on small screens
+  if (isMobile) {
+    return <MobileBoard boardId={boardId} />;
+  }
 
   return (
     <div className="flex h-full flex-col">
