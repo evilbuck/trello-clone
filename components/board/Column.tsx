@@ -2,8 +2,9 @@
 
 import { useState } from 'react';
 import { Droppable, Draggable } from '@hello-pangea/dnd';
-import { List, useCreateCard, useDeleteCard } from '@/hooks/useBoard';
+import { List, Card as CardType, useCreateCard, useDeleteCard } from '@/hooks/useBoard';
 import { Card } from './Card';
+import { CardModal } from './CardModal';
 
 interface ColumnProps {
   list: List;
@@ -14,6 +15,8 @@ interface ColumnProps {
 export function Column({ list, index, onDeleteList }: ColumnProps) {
   const [isAddingCard, setIsAddingCard] = useState(false);
   const [newCardTitle, setNewCardTitle] = useState('');
+  const [selectedCard, setSelectedCard] = useState<CardType | null>(null);
+  const [isCardModalOpen, setIsCardModalOpen] = useState(false);
 
   const createCard = useCreateCard();
   const deleteCard = useDeleteCard();
@@ -40,6 +43,11 @@ export function Column({ list, index, onDeleteList }: ColumnProps) {
     } catch (error) {
       console.error('Failed to delete card:', error);
     }
+  };
+
+  const handleEditCard = (card: CardType) => {
+    setSelectedCard(card);
+    setIsCardModalOpen(true);
   };
 
   return (
@@ -86,6 +94,7 @@ export function Column({ list, index, onDeleteList }: ColumnProps) {
                       card={card}
                       index={cardIndex}
                       onDelete={handleDeleteCard}
+                      onEdit={handleEditCard}
                     />
                   ))}
                 </div>
@@ -146,6 +155,16 @@ export function Column({ list, index, onDeleteList }: ColumnProps) {
               </button>
             )}
           </div>
+
+          <CardModal
+            card={selectedCard}
+            isOpen={isCardModalOpen}
+            onClose={() => {
+              setIsCardModalOpen(false);
+              setSelectedCard(null);
+            }}
+            boardId={list.boardId}
+          />
         </div>
       )}
     </Draggable>

@@ -187,7 +187,86 @@ export function useMoveCard() {
       }
       return res.json();
     },
-    onSuccess: (_, variables) => {
+    onMutate: async ({ cardId, boardId, listId: destListId, position: destPosition }) => {
+      // Cancel any outgoing refetches
+      await queryClient.cancelQueries({ queryKey: ['board', boardId] });
+
+      // Snapshot the current data for rollback
+      const previousBoard = queryClient.getQueryData<BoardWithLists>(['board', boardId]);
+
+      // Optimistically update the cache
+      queryClient.setQueryData<BoardWithLists>(['board', boardId], (old) => {
+        if (!old) return old;
+
+        // Find the card
+        let movedCard: Card | undefined;
+        let sourceListIndex = -1;
+        let sourceCardIndex = -1;
+
+        // Find the source list and card
+        for (let i = 0; i < old.lists.length; i++) {
+          const cardIndex = old.lists[i].cards.findIndex((c) => c.id === cardId);
+          if (cardIndex !== -1) {
+            sourceListIndex = i;
+            sourceCardIndex = cardIndex;
+            movedCard = old.lists[i].cards[cardIndex];
+            break;
+          }
+        }
+
+        if (!movedCard || sourceListIndex === -1) return old;
+
+        // Find destination list
+        const destListIndex = old.lists.findIndex((l) => l.id === destListId);
+        if (destListIndex === -1) return old;
+
+        // Create new lists array with updates
+        const newLists = old.lists.map((list) => ({
+          ...list,
+          cards: [...list.cards],
+        }));
+
+        // Remove from source
+        const sourceCards = newLists[sourceListIndex].cards;
+        sourceCards.splice(sourceCardIndex, 1);
+
+        // Update positions in source list
+        sourceCards.forEach((card, idx) => {
+          card.position = idx;
+        });
+
+        // Update the moved card's properties
+        movedCard = {
+          ...movedCard,
+          listId: destListId,
+          position: destPosition,
+        };
+
+        // Add to destination
+        const destCards = newLists[destListIndex].cards;
+        destCards.splice(destPosition, 0, movedCard);
+
+        // Update positions in destination list
+        destCards.forEach((card, idx) => {
+          card.position = idx;
+        });
+
+        return {
+          ...old,
+          lists: newLists,
+        };
+      });
+
+      return { previousBoard };
+    },
+    onError: (_err, _variables, context) => {
+      // Rollback on error
+      if (context?.previousBoard) {
+        queryClient.setQueryData(['board', context.previousBoard.id], context.previousBoard);
+      }
+    },
+    onSettled: (_data, _error, variables) => {
+      // Always refetch to ensure consistency
       queryClient.invalidateQueries({ queryKey: ['board', variables.boardId] });
     },
   });
@@ -209,7 +288,57 @@ export function useReorderList() {
       }
       return res.json();
     },
-    onSuccess: (_, variables) => {
+    onMutate: async ({ listId, boardId, position: newPosition }) => {
+      // Cancel any outgoing refetches
+      await queryClient.cancelQueries({ queryKey: ['board', boardId] });
+
+      // Snapshot the current data for rollback
+      const previousBoard = queryClient.getQueryData<BoardWithLists>(['board', boardId]);
+
+      // Optimistically update the cache
+      queryClient.setQueryData<BoardWithLists>(['board', boardId], (old) => {
+        if (!old) return old;
+
+        // Find the list being moved
+        const listIndex = old.lists.findIndex((l) => l.id === listId);
+        if (listIndex === -1) return old;
+
+        const movedList = old.lists[listIndex];
+        const oldPosition = movedList.position;
+
+        // If position hasn't changed, no update needed
+        if (oldPosition === newPosition) return old;
+
+        // Create new lists array
+        const newLists = [...old.lists];
+
+        // Remove the list from its current position
+        newLists.splice(listIndex, 1);
+
+        // Insert at new position
+        newLists.splice(newPosition, 0, { ...movedList, position: newPosition });
+
+        // Update positions for all lists
+        newLists.forEach((list, idx) => {
+          list.position = idx;
+        });
+
+        return {
+          ...old,
+          lists: newLists,
+        };
+      });
+
+      return { previousBoard };
+    },
+    onError: (_err, _variables, context) => {
+      // Rollback on error
+      if (context?.previousBoard) {
+        queryClient.setQueryData(['board', context.previousBoard.id], context.previousBoard);
+      }
+    },
+    onSettled: (_data, _error, variables) => {
+      // Always refetch to ensure consistency
       queryClient.invalidateQueries({ queryKey: ['board', variables.boardId] });
     },
   });

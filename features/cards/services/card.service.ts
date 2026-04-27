@@ -180,10 +180,10 @@ export async function moveCard(
     );
   }
 
-  // Update target list positions
+  // Update target list positions and listId for moved card
   await Promise.all(
     allTargetCards.map((c, index) =>
-      db.update(cards).set({ position: index, updatedAt: new Date() }).where(eq(cards.id, c.id))
+      db.update(cards).set({ position: index, listId: c.listId, updatedAt: new Date() }).where(eq(cards.id, c.id))
     )
   );
 

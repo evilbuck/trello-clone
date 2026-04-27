@@ -7,9 +7,10 @@ interface CardProps {
   card: CardType;
   index: number;
   onDelete: (cardId: string) => void;
+  onEdit: (card: CardType) => void;
 }
 
-export function Card({ card, index, onDelete }: CardProps) {
+export function Card({ card, index, onDelete, onEdit }: CardProps) {
   return (
     <Draggable draggableId={card.id} index={index}>
       {(provided, snapshot) => (
@@ -17,13 +18,14 @@ export function Card({ card, index, onDelete }: CardProps) {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className={`group relative rounded-md bg-white p-3 shadow-sm dark:bg-zinc-700 ${
+          onClick={() => onEdit(card)}
+          className={`group relative cursor-pointer rounded-md border border-transparent bg-white p-3 shadow-sm hover:border-zinc-300 hover:bg-zinc-50 hover:shadow-md dark:border-zinc-600 dark:bg-zinc-700 dark:hover:bg-zinc-600 ${
             snapshot.isDragging
               ? 'rotate-2 shadow-md'
               : ''
           }`}
         >
-          <p className="text-sm text-zinc-800 dark:text-zinc-100">{card.title}</p>
+          <p className="text-sm font-medium text-zinc-800 dark:text-zinc-100">{card.title}</p>
           <button
             onClick={(e) => {
               e.stopPropagation();

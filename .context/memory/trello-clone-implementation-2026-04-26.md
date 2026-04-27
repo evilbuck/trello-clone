@@ -1,7 +1,7 @@
 ---
 date: 2026-04-26
-domains: [fullstack, nextjs, drizzle, sse, dnd, bugfix, lint]
-topics: [trello-clone, kanban, react-query, tailwind, docker, kamal, bugfix, lint]
+domains: [fullstack, nextjs, drizzle, sse, dnd, bugfix, lint, modal]
+topics: [trello-clone, kanban, react-query, tailwind, docker, kamal, bugfix, lint, card-edit, modal]
 subject: 2026-04-26.trello-clone-mvp
 artifacts: [plan-trello-clone.md]
 related: []
@@ -122,3 +122,24 @@ Dockerfile, config/deploy.yml, .env.example, next.config.ts
 4. Set up Kamal deployment secrets
 5. Deploy to Hostinger VPS
 6. Add integration tests (tests/integration/ is empty)
+7. Manual testing of card edit dialog
+
+## Card Edit Dialog Feature (2026-04-27)
+
+### Files Created/Modified
+- **NEW**: `components/board/CardModal.tsx` - Modal for editing card title
+- **MODIFIED**: `components/board/Card.tsx` - Added `onEdit` prop and click handler
+- **MODIFIED**: `components/board/Column.tsx` - Added modal state and CardModal render
+
+### Implementation Details
+- Card click opens modal via `onEdit` callback chain (Card → Column)
+- CardModal syncs local title state when opened
+- Save calls `useUpdateCard` mutation and closes modal on success
+- Escape key, overlay click, and X button all close modal (handled by Modal component)
+- Optimistic UI via React Query invalidation (handled by useUpdateCard)
+- Delete button uses `e.stopPropagation()` to prevent modal opening
+
+### Verification
+- TypeScript compiles without errors
+- Plan: .context/2026-04-26.card-edit-dialog/plan-card-edit-dialog.md
+- Status: COMPLETED (manual testing pending)

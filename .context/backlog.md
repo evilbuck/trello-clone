@@ -38,3 +38,7 @@
 - [x] Implement Trello Clone MVP (2026-04-26)
 - [x] Fix critical bugs from b-review (list reordering, card service dead code) (2026-04-27)
 - [x] Clean up lint warnings (26 unused imports, added /api/health endpoint) (2026-04-27)
+- [x] Implement card edit dialog (click card to edit title) (2026-04-27)
+- [x] Fix card drag bug (list_id not updating in database) (2026-04-27)
+- [x] Add optimistic updates for card drag (2026-04-27)
+- [x] Fix card hover styling for better contrast (2026-04-27)
