@@ -47,14 +47,6 @@ builder:
     APP_VERSION: "<%= ENV['APP_VERSION'] %>"
     GIT_SHA: "<%= ENV['GIT_SHA'] %>"
 
-# Healthcheck configuration
-healthcheck:
-  path: /api/health
-  port: 3000
-  interval: 10s
-  timeout: 2s
-  retries: 3
-
 # Labels
 labels:
   service: trello-clone
