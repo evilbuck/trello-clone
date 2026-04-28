@@ -46,9 +46,20 @@ export function initializeDatabase() {
       updated_at INTEGER NOT NULL
     );
 
+    CREATE TABLE IF NOT EXISTS password_reset_tokens (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL REFERENCES users(id),
+      token_hash TEXT NOT NULL,
+      expires_at INTEGER NOT NULL,
+      used_at INTEGER,
+      created_at INTEGER NOT NULL
+    );
+
     CREATE INDEX IF NOT EXISTS idx_boards_user_id ON boards(user_id);
     CREATE INDEX IF NOT EXISTS idx_lists_board_id ON lists(board_id);
     CREATE INDEX IF NOT EXISTS idx_cards_list_id ON cards(list_id);
+    CREATE INDEX IF NOT EXISTS idx_reset_tokens_user_id ON password_reset_tokens(user_id);
+    CREATE INDEX IF NOT EXISTS idx_reset_tokens_hash ON password_reset_tokens(token_hash);
   `);
 }
 

@@ -37,6 +37,15 @@
 - Test deployment
 - Verify production build works
 
+### forgot-password
+**Description**: Forgot password flow with email reset link
+**Context**:
+- User clicks "Forgot password?" on login → enters email → receives reset link → sets new password → redirected to dashboard
+- Email via Resend, tokens stored hashed in new `password_reset_tokens` table
+- See plan: [.context/2026-04-27.forgot-password/plan-forgot-password.md](.context/2026-04-27.forgot-password/plan-forgot-password.md)
+- Affected files: `lib/db/schema.ts`, `features/auth/`, `lib/email.ts` (new), `app/(auth)/forgot-password/` (new), `app/(auth)/reset-password/` (new), `components/auth/` (new forms)
+- Needs: `RESEND_API_KEY` and `APP_URL` env vars
+
 ## High Priority
 - [ ] Manual testing and verification of Trello Clone MVP
 - [ ] Configure Kamal secrets for deployment
@@ -58,3 +67,4 @@
 - [x] Add Google Analytics tag + custom event tracking (signup, login, create board/list/card) (2026-04-27)
 - [x] Fix signout not redirecting to login page (2026-04-27)
 - [x] Mobile board swipe view with snap-to-list carousel (2026-04-27)
+- [x] Forgot password flow with Brevo email (2026-04-27)

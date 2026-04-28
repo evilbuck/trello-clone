@@ -1,5 +1,7 @@
 # Memory Index
 
+- 2026-04-27 | `forgot-password-2026-04-27.md` | domains: [auth, backend, frontend] | topics: [forgot-password, password-reset, email, brevo, jwt] | status: completed
+- 2026-04-27 | `forgot-password-plan-2026-04-27.md` | domains: [planning, auth] | topics: [forgot-password, password-reset, email, brevo, jwt] | status: completed
 - 2026-04-27 | `mobile-board-swipe-2026-04-27.md` | domains: [mobile, responsive, scroll-snap] | topics: [mobile-swipe, scroll-snap, responsive-design, board-view] | status: completed
 - 2026-04-27 | `plan-mobile-board-swipe-2026-04-27.md` | domains: [planning, frontend, mobile, ui] | topics: [mobile-board, swipe, scroll-snap, responsive, trello-clone] | status: completed
 - 2026-04-27 | `signout-fix-2026-04-27.md` | domains: [bugfix, auth, backend] | topics: [signout, logout, auth-cookie, redirect] | status: completed

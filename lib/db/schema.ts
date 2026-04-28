@@ -39,6 +39,16 @@ export const cards = sqliteTable('cards', {
   updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull(),
 });
 
+// Password reset tokens table
+export const passwordResetTokens = sqliteTable('password_reset_tokens', {
+  id: text('id').primaryKey(),
+  userId: text('user_id').references(() => users.id).notNull(),
+  tokenHash: text('token_hash').notNull(),
+  expiresAt: integer('expires_at', { mode: 'timestamp' }).notNull(),
+  usedAt: integer('used_at', { mode: 'timestamp' }),
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
+});
+
 // Type exports
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
@@ -48,3 +58,5 @@ export type List = typeof lists.$inferSelect;
 export type NewList = typeof lists.$inferInsert;
 export type Card = typeof cards.$inferSelect;
 export type NewCard = typeof cards.$inferInsert;
+export type PasswordResetToken = typeof passwordResetTokens.$inferSelect;
+export type NewPasswordResetToken = typeof passwordResetTokens.$inferInsert;

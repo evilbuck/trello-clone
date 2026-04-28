@@ -38,6 +38,7 @@ env:
   # Secret variables (fetched from 1Password via .kamal/secrets)
   secret:
     - JWT_SECRET
+    - BREVO_API_KEY
     - KAMAL_REGISTRY_PASSWORD
     - KAMAL_REGISTRY_USERNAME
 
