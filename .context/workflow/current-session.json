@@ -99,7 +99,8 @@
     ".context/memory/forgot-password-2026-04-27.md",
     ".kamal/secrets",
     ".env.example",
-    ".context/workflow/current-session.json"
+    ".context/workflow/current-session.json",
+    "README.md"
   ],
   "guided_workflow": null,
   "guided_stage": null,
